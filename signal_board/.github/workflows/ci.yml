@@ -1,0 +1,22 @@
+name: STM32 CI/CD
+
+on: [push]  # 每次代码推送时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 安装ARM GCC工具链
+        run: sudo apt-get install -y gcc-arm-none-eabi
+
+      - name: 编译代码
+        run: make
+
+      - name: 上传固件
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware
+          path: build/*.elf  # 上传生成的固件文件
